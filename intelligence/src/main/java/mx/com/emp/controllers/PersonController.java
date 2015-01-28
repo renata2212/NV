@@ -25,14 +25,14 @@ public class PersonController {
 
 	public static final String CREATE_PERSON = "/create-person";
 
+	public static final String UPDATE_PERSON = "/update-person";
+
 	@RequestMapping(value = CREATE_PERSON, method = RequestMethod.GET)
 	public String createPerson(PersonDTO person, ModelMap model)
 			throws ServiceException {
 
 		if (LOGGER.isDebugEnabled()) {
-
 			LOGGER.debug(" -- Creando Persona --");
-
 		}
 
 		model.addAttribute("message", "Listo");
@@ -50,6 +50,36 @@ public class PersonController {
 		person.setPersonTypeId(1);
 		person.setPersonWorkingSection("CC");
 		person.setStatusId(1);
+
+		personService.createOrUpdatePerson(person);
+
+		return "createVehicle";
+	}
+
+	@RequestMapping(value = UPDATE_PERSON, method = RequestMethod.GET)
+	public String updatePerson(PersonDTO person, ModelMap model)
+			throws ServiceException {
+
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(" -- Actualizando Persona --");
+		}
+
+		model.addAttribute("message", "Actualizado");
+
+		person.setPersonAdditionalData("Informacion Adicional Upd");
+		person.setPersonAddress("Direccion Upd");
+		person.setPersonCompany("Empresa Upd");
+		person.setPersonDegree("Teniente Upd");
+		person.setPersonDocument("IFE Upd");
+		person.setPersonDocumentNumber("MNI874FU8");
+		person.setPersonMobile(55215836);
+		person.setPersonName("Juan Upd");
+		person.setPersonPhone(554345);
+		person.setPersonSurname("Perez Upd");
+		person.setPersonTypeId(1);
+		person.setPersonWorkingSection("CC Upd");
+		person.setStatusId(2);
+		person.setPersonId(2);
 
 		personService.createOrUpdatePerson(person);
 

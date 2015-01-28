@@ -77,6 +77,7 @@ public class VehicleDAOImpl extends IntelligenceJdbcDaoSupport implements
 	}
 
 	@Override
+	@Transactional(value = "txManager", rollbackFor = { DaoException.class }, readOnly = false, propagation = Propagation.REQUIRED)
 	public VehicleDTO updateVehicle(VehicleDTO vehicle) throws DaoException {
 
 		try {
@@ -181,7 +182,7 @@ public class VehicleDAOImpl extends IntelligenceJdbcDaoSupport implements
 			VehicleDTO vehicle = null;
 
 			if (vehicleMap.containsKey(rs.getString("vehicle_id")))
-				vehicle = vehicleMap.get(rs.getString("vehicle_brand"));
+				vehicle = vehicleMap.get(rs.getString("vehicle_id"));
 			else
 				vehicle = new VehicleDTO();
 

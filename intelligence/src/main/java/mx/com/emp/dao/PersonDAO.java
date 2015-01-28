@@ -11,9 +11,9 @@ public interface PersonDAO extends Serializable {
 
 	PersonDTO updatePerson(PersonDTO person) throws DaoException;
 
-	PersonDTO getById(Integer person) throws DaoException;
+	PersonDTO getById(Integer personId) throws DaoException;
 
-	int deletePerson(Integer person) throws DaoException;
+	int deletePerson(Integer personId) throws DaoException;
 
 	List<PersonDTO> getAll() throws DaoException;
 }
