@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<bean id="log4jInitialization"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetClass" value="org.springframework.util.Log4jConfigurer" />
+		<property name="targetMethod" value="initLogging" />
+		<property name="arguments">
+			<list>
+				<value>classpath:log4j.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Activates scanning of @Autowired -->
+	<context:annotation-config />
+
+	<!-- Activates scanning of @Repository @Service and @Component -->
+	<context:component-scan base-package="mx.com.emp" />
+
+	<!-- Enable @Transactional support -->
+	<tx:annotation-driven transaction-manager="txManager" />
+
+	<context:property-placeholder
+		location="classpath:jdbc.properties, classpath:message.properties" />
+
+</beans>
