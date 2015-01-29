@@ -24,8 +24,5 @@ public abstract class IntelligenceJdbcDaoSupport {
 	public void initialize() {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-		
-		System.out.print("---- " + jdbcTemplate);
-
 	}
 }

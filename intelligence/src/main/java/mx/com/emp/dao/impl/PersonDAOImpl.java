@@ -184,15 +184,46 @@ public class PersonDAOImpl extends IntelligenceJdbcDaoSupport implements
 	}
 
 	@Override
-	public int deletePerson(Integer person) throws DaoException {
-		// TODO Auto-generated method stub
-		return 0;
+	@Transactional(value = "txManager", rollbackFor = { DaoException.class }, readOnly = false, propagation = Propagation.REQUIRED)
+	public int deletePerson(Integer statusId, Integer personId)
+			throws DaoException {
+
+		try {
+			StringBuilder sQuery = new StringBuilder("UPDATE PERSON SET ");
+			sQuery.append(" status_id = ?");
+			sQuery.append(" WHERE person_id = ?");
+
+			Object[] values = { statusId, personId };
+
+			int[] types = { Types.INTEGER, Types.INTEGER };
+
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug(" -- Cambio de Estatus de la Persona : ");
+			}
+
+			return jdbcTemplate.update(sQuery.toString(), values, types);
+
+		} catch (Exception e) {
+			LOGGER.error("Mensaje de error" + e);
+			throw new DaoException(genericError, e);
+		}
 	}
 
 	@Override
 	public List<PersonDTO> getAll() throws DaoException {
-		// TODO Auto-generated method stub
-		return null;
+
+		try {
+			StringBuilder sQuery = new StringBuilder(
+					"SELECT person_id, status_id, person_relative_id, person_type_id, person_name, person_surname,"
+							+ " person_address, person_phone, person_mobile, person_document, person_document_number, person_additional_data,"
+							+ " person_company, person_degree, person_working_section FROM PERSON ");
+
+			return jdbcTemplate.query(sQuery.toString(), new PersonMapper());
+
+		} catch (Exception ex) {
+			LOGGER.error("Mensaje de error" + ex);
+			throw new DaoException(genericError, ex);
+		}
 	}
 
 	/**
@@ -219,8 +250,8 @@ public class PersonDAOImpl extends IntelligenceJdbcDaoSupport implements
 
 			person.setPersonId(new Integer(rs.getString("person_id")));
 			person.setStatusId(new Integer(rs.getString("status_id")));
-			person.setPersonRelativeId(new Integer(rs
-					.getString("person_relative_id")));
+			person.setPersonRelativeId(rs.getString("person_relative_id") != null ? new Integer(
+					rs.getString("person_relative_id")) : null);
 			person.setPersonTypeId(new Integer(rs.getString("person_type_id")));
 			person.setPersonName(rs.getString("person_name"));
 			person.setPersonSurname(rs.getString("person_surname"));
@@ -240,6 +271,35 @@ public class PersonDAOImpl extends IntelligenceJdbcDaoSupport implements
 			personMap.put(person.getPersonId().toString(), person);
 
 			return person;
+		}
+	}
+
+	@Override
+	@Transactional(value = "txManager", rollbackFor = { DaoException.class }, readOnly = false, propagation = Propagation.REQUIRED)
+	public int saveVehiclePerson(Integer vehicleId, Integer personId)
+			throws DaoException {
+
+		try {
+
+			StringBuilder sQuery = new StringBuilder(
+					"INSERT INTO VEHICLE_PERSON (");
+			sQuery.append(" vehicle_id,");
+			sQuery.append(" person_id");
+			sQuery.append(" ) VALUES (?,?)");
+
+			Object[] values = { vehicleId, personId };
+
+			int[] types = { Types.INTEGER, Types.INTEGER };
+
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug(" -- Persona - Vehiculo Creada : ");
+			}
+
+			return jdbcTemplate.update(sQuery.toString(), values, types);
+
+		} catch (Exception e) {
+			LOGGER.error("Mensaje de error" + e);
+			throw new DaoException(genericError, e);
 		}
 	}
 

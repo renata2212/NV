@@ -133,9 +133,7 @@ public class VehicleDAOImpl extends IntelligenceJdbcDaoSupport implements
 					"SELECT vehicle_id, vehicle_brand, vehicle_model, vehicle_color, vehicle_year, vehicle_license_plate"
 							+ " FROM VEHICLE ");
 
-			return jdbcTemplate.query(sQuery.toString(),
-
-			new VehicleMapper());
+			return jdbcTemplate.query(sQuery.toString(), new VehicleMapper());
 
 		} catch (Exception ex) {
 			LOGGER.error("Mensaje de error" + ex);

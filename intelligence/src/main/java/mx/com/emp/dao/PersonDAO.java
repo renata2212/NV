@@ -13,7 +13,10 @@ public interface PersonDAO extends Serializable {
 
 	PersonDTO getById(Integer personId) throws DaoException;
 
-	int deletePerson(Integer personId) throws DaoException;
+	int deletePerson(Integer statusId, Integer personId) throws DaoException;
 
 	List<PersonDTO> getAll() throws DaoException;
+
+	int saveVehiclePerson(Integer vehicleId, Integer personId)
+			throws DaoException;
 }
